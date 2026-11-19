@@ -1,12 +1,14 @@
 # Performance and images: activitytimeline.com, 19 Nov 2026
 
-**Performance score: 60 / 100 (low confidence).** Derived from what could be measured (document delivery, HTML weight, DOM size, script and iframe loading order) and not from Core Web Vitals: LCP, CLS, TBT, CSS/JS/image/font weight could not be measured today (see "Not measured"). Start 100; minus 12 render-blocking third-party script on every page, minus 10 hidden Calendly iframe on /pricing and /tempo-alternative, minus 10 HTML and DOM weight, minus 8 for missing measurement of the vitals themselves (unknown is not a pass).
+**Performance score: 66 / 100 (low to medium confidence).** Revised from 60 after the second run (see "Second run"). Lab, first-party resources only: LCP 0.5-0.75 s on a text element, CLS 0.00, almost no long tasks, about 0.65-0.68 MB at load. That removes the "vitals unknown" penalty (+8) but adds two measured costs: 314 KB of fonts and a 777 KB (128 KB Brotli) render-blocking stylesheet (-2). The two High findings (reCAPTCHA in the head, hidden Calendly iframe) are unchanged, and every third party was blocked, so this is a best case, not a Core Web Vitals verdict.
 
-**Images score: 55 / 100 (medium confidence, attributes only).** Start 100; minus 20 no `height` on any image on any of 21 pages, minus 10 `loading="lazy"` on above-the-fold header images, minus 10 PNG/JPG without modern format on blog and home, minus 5 no `fetchpriority` on hero images. Image byte sizes were not measured.
+**Images score: 68 / 100 (medium confidence).** Revised from 55. Measured image bytes on the three pages are small (75-142 KB after a full scroll, almost all SVG), and the missing dimensions produced no measurable layout shift in the lab (largest single shift 0.0016). Still minus for: no `height` on any image on 21 pages, lazy header logo, PNG/JPG on /blog (bytes there not measured), avatars served at 128 px for a 20-36 px slot, no `fetchpriority` on guide and blog hero images.
 
 All numbers below are **lab data from a cloud container in the US, not field data**. None of them is a Core Web Vitals pass or fail.
 
-## Not measured (and why)
+## Not measured in the first run (and why)
+
+Rows 2-5 were partly closed by the second run below, for first-party resources only. Field data is still not measured.
 
 | Item | Status |
 |---|---|
@@ -28,6 +30,51 @@ To close the gap: run PageSpeed Insights from a browser (or tomorrow, when the s
 | /capacity-planning | 125-148 ms | 76 KB / 271 KB | 1,486 | 24 | 128 (116 KB) | 90 KB | 0.2 KB |
 
 Requests the parser starts at load (before scroll, same on all three): 1 stylesheet, 4 synchronous scripts at the end of `<body>` (jQuery 3.5.1 from cloudfront + 3 Webflow chunks), 1 synchronous script in `<head>` (reCAPTCHA), GTM (async), Finsweet Attributes (async module, jsdelivr), 4 images; on desktop also `bat.bing.com`. /pricing adds 4 eager badge images and the Calendly iframe.
+
+## Second run: lab, first-party resources only, third parties blocked, US cloud container (19 Nov 2026 ~12:40 UTC)
+
+The asset CDN `cdn.prod.website-files.com` was opened; still refused by the proxy: jQuery (`d3e54v103j8qbb.cloudfront.net`), `www.google.com` (reCAPTCHA), `www.googletagmanager.com` (and everything GTM injects: CookieYes, Bing UET), `calendly.com`, `cdn.jsdelivr.net`, Freshchat. Because jQuery never loaded, Webflow's own interaction code probably did not run either. **Every number in this section is a best case: lab, first-party only, third parties blocked, US cloud container, no network throttling. It is not a Core Web Vitals verdict, and TBT in particular is understated.** Chromium 157, Playwright 1.63. Mobile = 412x823, DPR 1.75, CPU 4x via CDP, two runs; desktop = 1350x940, one run.
+
+| Page, profile | TTFB | FCP | LCP | LCP element | CLS | TBT (INP proxy) | Long tasks |
+|---|---|---|---|---|---|---|---|
+| / mobile | 115-116 ms | 516-604 ms | 604-640 ms | `h1.heading-style-h1.fh-h1` (text) | 0.000 | 0-107 ms | 0-2, longest 138 ms |
+| / desktop | 133 ms | 528 ms | 528 ms | same `h1` | 0.0004 | 0 ms | 1 (64 ms) |
+| /pricing mobile | 127-165 ms | 528-584 ms | 740-748 ms | `h1.heading-style-h1.align-center` (text) | 0.000 | 19-47 ms | 1-2, longest 97 ms |
+| /pricing desktop | 105 ms | 500 ms | 500 ms | same `h1` | 0.0014 | 0 ms | 0 |
+| /capacity-planning mobile | 145-159 ms | 584-644 ms | 584-644 ms | `p.sol-lead.sol-lead-hero` (text) | 0.000 | 50-72 ms | 1, longest 122 ms |
+| /capacity-planning desktop | 169 ms | 564 ms | 564 ms | `h1.sol-h1` (text) | 0.0026 | 0 ms | 0 |
+
+- **LCP element is text on all three pages**, so it is not an image, not lazy-loaded and needs no dimensions. This confirms the static reading in finding 4. Text LCP depends on the stylesheet and, with `font-display: swap`, paints in the fallback font first.
+- **CLS**: the only shifts are in the desktop header as the lazy logo and fonts arrive (`a.brand-web.w-nav-brand` 24 px to 48 px tall; `nav.nav-menu-locales-wrapper`), each 0.0001-0.0016. Cookie banner, chat and Calendly, the usual shift sources, were blocked.
+- **Render-blocking** (Resource Timing `renderBlockingStatus: blocking`): the stylesheet and `recaptcha/api.js`. Nothing else.
+
+**First-party transfer at load (mobile; desktop within 1 KB), by type**
+
+| Page | HTML | CSS | JS (3 Webflow files) | Fonts (3) | Images at load | Total at load | Total after full scroll |
+|---|---|---|---|---|---|---|---|
+| / | 124 KB | 126 KB | 85 KB | 314 KB | 9 files, 31 KB | 680 KB | 779 KB (24 images, 131 KB) |
+| /pricing | 57 KB | 126 KB | 82 KB | 314 KB | 5 files, 62 KB | 641 KB | 654 KB (11 images, 75 KB) |
+| /capacity-planning | 76 KB | 126 KB | 82 KB | 314 KB | 14 files, 86 KB | 683 KB | 697 KB (20 images, 99 KB) |
+
+Not in these totals: jQuery, reCAPTCHA, GTM and its tags, Calendly, Finsweet, Freshchat (all blocked).
+
+**Images (bytes and formats).** / : 22 SVG (106 KB) + 2-3 PNG (25-36 KB), no WebP or AVIF. /pricing: 11 SVG (75 KB). /capacity-planning: 20 SVG (99 KB). Largest single images: an integration logo SVG 40 KB (home), the SOC 2 badge SVG 27 KB (on /pricing and /capacity-planning; a badge that size is probably an embedded bitmap or unoptimised paths). The three reviewer photos on the home page are 128 px PNGs (about 12 KB each) shown at 20 px (mobile) to 36 px (desktop). Asset cache headers: `max-age=31536000` (some `immutable`). Blog and guide image bytes were not measured.
+
+**Fonts.** Three self-hosted Inter WOFF2 files from the asset CDN: Regular 99 KB, Medium 107 KB, SemiBold 107 KB = 314 KB, 46-49% of first-party bytes at load, each fetched at priority VeryHigh. `font-display: swap` on all three (good: no invisible text). No `preload`, and no subsetting (about 100 KB per weight is the full Inter character set). A fourth face, `webflow-icons`, is embedded in the CSS.
+
+### 8. Medium. Fonts are the heaviest first-party resource: 314 KB for three unsubsetted Inter weights. CONFIRMED (lab, first-party only)
+- Evidence: table above; `631873084184055d00ab1ebe_Inter-Regular.woff2` 99.1 KB, `63187d467e34051e7d79c2bf_Inter-Medium.woff2` 107.3 KB, `631873ad43366e4cf30b6ccc_Inter-SemiBold.woff2` 107.3 KB.
+- Fix: upload subset files (Latin + Latin Extended covers en, es, fr, pt; about 20-30 KB per weight) or one subset variable Inter file, in Webflow Site settings > Fonts; keep `swap`. Then preload the one weight the `h1` uses.
+- KPI: demos and 50+ user trials (weak); buyer-segment clicks (tiebreaker only). Tier 3 (reversible; check accented characters in all four locales before publish).
+- Failed if: font transfer is still above about 120 KB, or any es/fr/pt page shows a fallback glyph.
+
+### 9. Medium. One 777 KB stylesheet (128 KB Brotli) blocks rendering on every page. CONFIRMED
+- Evidence: `activitytimeline.webflow.shared.f1d483372.min.css`: 128,085 bytes on the wire (`content-encoding: br`), 776,535 bytes decoded, `renderBlockingStatus: blocking`. Early Hints preload softens the download, not the parse.
+- Fix: in the Webflow Style Manager run "Clean up" to remove unused classes, then delete unused interactions and the styles of retired pages (the `/design` staging folder is a likely source). No ticket before a PSI coverage figure shows how much is unused.
+- KPI: buyer-segment clicks (tiebreaker only). Tier 3 (clean-up is not undoable per class once published: back up the site first).
+- Failed if: the decoded stylesheet is not at least a quarter smaller after the clean-up.
+
+**What the second run changes in the findings above.** Finding 4: missing dimensions are confirmed harmless for CLS on these three pages in this lab (CSS fixes the sizes); keep the logo fix, drop the urgency. Finding 5: the home-page PNGs are small in bytes (36 KB in total); the open question is only /blog. Finding 6: the asset CDN does serve Brotli; the gzip seen on the HTML document is still unconfirmed. Findings 1, 2 and 3: unchanged, and not testable while those hosts are blocked.
 
 ## What works
 
@@ -91,4 +138,5 @@ Google Tag Manager `GTM-N7ZQ2HH` (async, in head; whatever it injects, including
 1. Finding 2 (one custom-code edit, two money pages).
 2. Finding 1 (one site setting, every page; needs Ostap's answer on spam protection).
 3. Finding 4 header logo eager + dimensions (one shared component).
-4. Get real numbers: PSI for /, /pricing, /capacity-planning (field + lab) before spending effort on findings 3 and 5.
+4. Finding 8 (fonts: the largest measured saving, about 200 KB per first visit).
+5. Get field numbers and third-party cost: PSI for /, /pricing, /capacity-planning before spending effort on findings 3, 5 and 9.

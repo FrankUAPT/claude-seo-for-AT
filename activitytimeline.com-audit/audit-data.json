@@ -1,0 +1,100 @@
+{
+ "summary": {
+  "health_score": 69,
+  "business_type": "SaaS (Jira Marketplace app)",
+  "top_findings": [
+   "/pricing server HTML shows $1,000 / month in both plan cards until a script runs",
+   "Six product pages declare schema URLs that return 404",
+   "No SoftwareApplication entity; two competing Organization blocks",
+   "Cost pages never name the Advanced Edition or where native Jira stops",
+   "llms.txt has two redirecting links and misses nine live pages"
+  ],
+  "quick_wins": [
+   "Fix the static price text on /pricing",
+   "Correct the six schema URLs",
+   "Update llms.txt",
+   "122 to 125 reviews on /pricing; brand spelling in the shared header",
+   "Publish the approved description and title list"
+  ]
+ },
+ "categories": [
+  {
+   "name": "Technical SEO",
+   "score": 82,
+   "what_works": [],
+   "findings": []
+  },
+  {
+   "name": "Content Quality",
+   "score": 66,
+   "what_works": [],
+   "findings": []
+  },
+  {
+   "name": "On-Page SEO",
+   "score": 79,
+   "what_works": [],
+   "findings": []
+  },
+  {
+   "name": "Schema / Structured Data",
+   "score": 38,
+   "what_works": [],
+   "findings": []
+  },
+  {
+   "name": "Performance (CWV)",
+   "score": 66,
+   "what_works": [],
+   "findings": []
+  },
+  {
+   "name": "AI Search Readiness",
+   "score": 63,
+   "what_works": [],
+   "findings": []
+  },
+  {
+   "name": "Images",
+   "score": 68,
+   "what_works": [],
+   "findings": []
+  }
+ ],
+ "action_plan": {
+  "phases": [
+   {
+    "name": "Phase 1: Critical Fixes",
+    "timeframe": "Week 1",
+    "items": [
+     "ACTION-PLAN.md rows 1, 2, 5, 6, 8"
+    ]
+   },
+   {
+    "name": "Phase 2: High-Impact Improvements",
+    "timeframe": "Weeks 2-3",
+    "items": [
+     "Rows 3, 4, 7, 9, 10"
+    ]
+   },
+   {
+    "name": "Phase 3: Content & Authority",
+    "timeframe": "Month 2",
+    "items": [
+     "Rows 11 to 20"
+    ]
+   },
+   {
+    "name": "Phase 4: Monitoring & Iteration",
+    "timeframe": "Ongoing",
+    "items": [
+     "Re-check 4 Dec 2026 and 1 Jan 2027 against the 19 Nov baseline"
+    ]
+   }
+  ]
+ },
+ "artifacts": {
+  "findings_dir": "findings/",
+  "screenshots_dir": "screenshots/"
+ }
+}
