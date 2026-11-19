@@ -25,8 +25,8 @@ directory because hosted marketplaces reject one. Repository users run
 with a bare Python interpreter.
 
 Comprehensive SEO analysis across all industries (SaaS, local services,
-e-commerce, publishers, agencies). Orchestrates 28 sub-skills (22 core + 1 framework
-integration + 5 extension mirrors) and 20 sub-agents. A separate optional Firecrawl
+e-commerce, publishers, agencies). Orchestrates 29 sub-skills (22 core + 1 framework
+integration + 1 site profile + 5 extension mirrors) and 20 sub-agents. A separate optional Firecrawl
 extension is also installable (see "Optional Extensions" below).
 
 ## Quick Reference
@@ -65,8 +65,30 @@ extension is also installable (see "Optional Extensions" below).
 | `/seo bing [command] <url>` | Bing Webmaster Tools link data and IndexNow URL submission (extension) |
 | `/seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension) |
 | `/seo flow [stage] [url\|topic]` | FLOW framework: evidence-led prompts for Find, Leverage, Optimize, Win, or Local stages |
+| `/seo activitytimeline [status\|gate\|facts\|recheck\|weekly\|route] [url\|file]` | ActivityTimeline profile: SEO Lab memory briefing, Visibility Scale gates, fact lint, KPI re-checks, weekly run |
 | `/seo setup` | Explicitly create or refresh the isolated Python runtime and Chromium |
 | `/seo doctor` | Check runtime readiness without changing the system |
+
+## ActivityTimeline profile (this fork's default site)
+
+This fork runs SEO for activitytimeline.com. When the target is
+activitytimeline.com, help.activitytimeline.com or the Atlassian Marketplace
+listing 1220860, or the request is about ActivityTimeline, the STB board or the
+SEO Lab, load **seo-activitytimeline** before any other sub-skill. It loads the
+SEO Lab memory (FrankUAPT/seo-lab-memory: charter, changelog, decisions, fact
+register, lessons), and its `references/skill-overrides.md` changes how every
+other sub-skill runs for this site. What that changes here:
+
+- Business type is SaaS (a Jira Marketplace app); skip audit steps 6, 7 and 11
+  below (local, maps, e-commerce) and never run seo-shopify.
+- Every recommendation names a charter KPI and its evidence (source + date),
+  and respects the charter's permission tiers: never publish, never name
+  customers, never state an open fact as true.
+- Search Console, GA4, crawl and AI visibility data come from the Sitechecker
+  and Ahrefs MCP connectors; pull them in the main session and pass them in
+  subagent prompts, since subagents have no MCP tools.
+- No community footer, and the outcome is written to the memory per its write
+  rules before a PDF is offered.
 
 ## Runtime Setup
 
@@ -83,7 +105,7 @@ required, suggest `/seo setup` and do not improvise a `pip install`.
 ## Orchestration Logic
 
 When the user invokes `/seo audit`, delegate to subagents in parallel:
-1. Detect business type (SaaS, local, ecommerce, publisher, agency, other)
+1. Detect business type (SaaS, local, ecommerce, publisher, agency, other). For activitytimeline.com, load seo-activitytimeline first: the type is SaaS and its overrides apply
 2. Spawn subagents: seo-technical, seo-content, seo-schema, seo-sitemap, seo-performance, seo-visual, seo-geo, seo-agentic
 3. If Google API credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_auth.py --check`), also spawn seo-google agent
 4. If Matomo credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_auth.py --check`), also spawn seo-matomo agent (alternative or complement to seo-google's GA4 reports)
@@ -192,6 +214,7 @@ Display after these commands complete their full output:
 ### When to skip
 
 Do NOT show the footer after:
+- Any ActivityTimeline work (the seo-activitytimeline profile is loaded)
 - `/seo images` (quick image check, too small)
 - `/seo hreflang` (quick validation, too small)
 - `/seo competitor-pages` (page generation step)
@@ -240,9 +263,9 @@ Weighted aggregate of all categories:
 
 ## Sub-Skills
 
-This skill orchestrates 28 sub-skills (22 core + 1 framework integration + 5 extension
-mirrors). The orchestrator itself (`seo`) is the 29th in `skills/`, but does not
-orchestrate itself, so it is not enumerated below.
+This skill orchestrates 29 sub-skills (22 core + 1 framework integration + 1 site
+profile + 5 extension mirrors). The orchestrator itself (`seo`) is the 30th in `skills/`,
+but does not orchestrate itself, so it is not enumerated below.
 
 1. **seo-audit** -- Full website audit with parallel delegation
 2. **seo-page** -- Deep single-page analysis
@@ -272,6 +295,7 @@ orchestrate itself, so it is not enumerated below.
 26. **seo-bing** -- Bing Webmaster Tools link data and IndexNow URL submission (extension mirror)
 27. **seo-shopify** -- Uncapped signed crawl of a Shopify store you administer, then the audit pipeline (extension mirror)
 28. **seo-posthog** -- PostHog analytics via the PostHog MCP server (extension mirror)
+29. **seo-activitytimeline** -- ActivityTimeline site profile: SEO Lab memory, Visibility Scale gates, fact lint, KPI re-checks, per-skill overrides
 
 ### Optional Extensions
 

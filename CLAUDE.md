@@ -1,11 +1,57 @@
 # Claude SEO: Universal SEO Analysis Skill
 
+## This fork: the ActivityTimeline SEO Lab toolkit
+
+This repository is FrankUAPT's fork of claude-seo, tailored to run SEO for
+**activitytimeline.com** (a Jira Marketplace app on Webflow, in en/es/fr/pt).
+The generic toolkit stays intact. The `seo-activitytimeline` skill and
+`data/activitytimeline/profile.json` add the site profile; the SEO Lab memory
+repository holds what the Lab knows, decided, changed and measured.
+
+### Memory: read first, write last
+
+The memory is **FrankUAPT/seo-lab-memory**, checked out next to this repository
+(`../seo-lab-memory`; cloud sessions use `/home/user/seo-lab-memory`;
+`SEO_LAB_MEMORY` overrides the path). It wins on facts and decisions; Jira STB
+wins on ticket state.
+
+Start of every ActivityTimeline session:
+1. If the checkout is missing, attach the repository with add_repo (cloud
+   sessions) and clone it with depth 1 to `/home/user/seo-lab-memory`, or run
+   `git clone https://github.com/FrankUAPT/seo-lab-memory ../seo-lab-memory`
+   locally. Then `git -C <memory> pull --ff-only`.
+2. Read `charter.md`, the last 10 entries of `changes/CHANGELOG.md`,
+   `decisions/README.md`, `facts.md` (before writing any copy), the initiative
+   file you are working on, and the `lessons.md` section for the tool you use.
+3. For "where are we, what is next": `/seo activitytimeline status`.
+
+End of every run that learned, decided or changed something:
+1. Write outcomes, not transcripts, in the right lane (memory README): a
+   changelog entry with its baseline for a shipped change, a decision file for
+   a decision of Ostap's, a scorecard row for a weekly run, a `lessons.md` line
+   for a tool quirk. No raw data, no secrets, no customer names.
+2. Commit once with `[Role] what changed` (`[PM] ...`, `[Analyst] ...`) and push
+   straight to the memory's `main` (Ostap's decision of 19 Nov 2026). If the push
+   is rejected because `main` moved, pull with `--ff-only` or merge, then push
+   again. Never force-push or rewrite history.
+
+### Standing rules for ActivityTimeline work (from the charter)
+
+- Every proposal names the KPI it moves and its evidence (source + date).
+- Ostap publishes. Reversible live changes need his approval on the ticket;
+  irreversible ones (unpublish, 301, delete) also need a devil's advocate comment.
+- Never name customers or state an open fact as true. Run
+  `/seo activitytimeline facts` on copy before it goes into Webflow.
+- Off-limits: new generic Jira how-to posts, new localized blog posts, new
+  "X alternatives" posts for non-Jira tools.
+- Out of scope for this site: seo-local, seo-maps, seo-ecommerce, seo-shopify.
+
 ## Project Overview
 
 This repository contains **Claude SEO**, a Tier 4 Claude Code skill for comprehensive
 SEO analysis across all industries. It follows the Agent Skills open standard and the
-3-layer architecture (directive, orchestration, execution). 29 sub-skills (22 core +
-1 orchestrator + 1 framework integration + 5 extension mirrors), 20 sub-agents (16 core +
+3-layer architecture (directive, orchestration, execution). 30 sub-skills (22 core +
+1 orchestrator + 1 framework integration + 1 site profile + 5 extension mirrors), 20 sub-agents (16 core +
 1 framework integration + 3 extension mirrors), and an extensible reference
 system cover technical SEO, content quality,
 schema markup, image optimization, sitemap architecture, AI search optimization,
@@ -24,7 +70,7 @@ claude-seo/
   .claude-plugin/
     plugin.json                    # Plugin manifest (v2.6.2)
     marketplace.json               # Marketplace catalog for distribution
-  skills/                            # 29 sub-skills (auto-discovered)
+  skills/                            # 30 sub-skills (auto-discovered)
     seo/                           # Main orchestrator skill
       SKILL.md                     # Entry point, routing table, core rules
       references/                  # On-demand knowledge files (13 files)
@@ -71,6 +117,9 @@ claude-seo/
     seo-bing/SKILL.md           # Bing Webmaster Tools and IndexNow (extension mirror)
     seo-shopify/SKILL.md        # Shopify Crawler Access signed crawl (extension mirror)
     seo-posthog/SKILL.md        # PostHog analytics via MCP (extension mirror)
+    seo-activitytimeline/       # ActivityTimeline site profile (SEO Lab memory, gates, fact lint)
+      SKILL.md
+      references/                # Per-skill overrides, KPI measurement recipes
   agents/                          # 20 subagents (auto-discovered)
     seo-technical.md             # Crawlability, indexability, security
     seo-content.md               # E-E-A-T, readability, thin content
@@ -94,7 +143,7 @@ claude-seo/
     seo-flow.md                  # FLOW framework integration
   hooks/                           # Quality gate hooks
     hooks.json                   # PostToolUse schema validation
-  scripts/                         # 67 Python execution scripts
+  scripts/                         # 69 Python execution scripts
     google_auth.py               # Credential management (OAuth, SA, API key, 4-tier detection)
     google_properties.py         # Picks the GSC/GA4 property for the audited domain, fails closed on a mismatch
     profile_paths.py             # Credential directory (CLAUDE_SEO_PROFILE_DIR, default ~/.config/claude-seo)
@@ -162,7 +211,10 @@ claude-seo/
     shopify_env.py               # .shopify-env reader and Crawler Access precheck
     shopify_crawl.py             # Signed sitemap-driven Shopify storefront crawl
     runtime.py                   # Managed runtime behind the claude-seo launcher
+    activitytimeline_gate.py     # ActivityTimeline Visibility Scale gates (G1, G3 fact lint, G5) on a page, the commercial set or a draft
+    lab_memory_status.py         # SEO Lab memory briefing: due re-checks, open decisions, freshness, KPIs
   schema/                          # Schema.org JSON-LD templates
+  data/activitytimeline/profile.json # ActivityTimeline site profile and fact rules (mirrors the memory's facts.md)
   extensions/                      # 11 optional add-ons (5 MCP, 6 non-MCP)
     dataforseo/                  # DataForSEO MCP install scripts
     firecrawl/                   # Firecrawl MCP install scripts
@@ -217,6 +269,7 @@ claude-seo/
 | `/seo posthog [command]` | PostHog via MCP: GA4 alternative or complement (extension) |
 | `/seo unlighthouse <url>` | Multi-page Lighthouse runner, runs locally (extension) |
 | `/seo shopify [crawl\|check] <url>` | Uncapped signed crawl of a Shopify store you administer, then the audit (extension) |
+| `/seo activitytimeline [status\|gate\|facts\|recheck\|weekly\|route]` | ActivityTimeline profile: SEO Lab memory briefing, gates, fact lint, KPI re-checks |
 
 ## Development Rules
 
@@ -267,6 +320,10 @@ Part of the Claude Code skill family:
 4. **Extension System**: 11 extensions. DataForSEO, Firecrawl, Banana, Ahrefs, and PostHog connect an MCP server; SE Ranking, Profound, Bing Webmaster, Matomo, Unlighthouse, and Shopify do not
 
 ## Repository Topology (public + private)
+
+This fork's `origin` is `FrankUAPT/claude-seo-for-AT`; the table below describes
+the upstream project (AgriciDaniel/claude-seo) and its release process. Pull
+upstream changes into this fork by merge, keeping the ActivityTimeline layer.
 
 This project is mirrored across two GitHub remotes with shared historical
 ancestry. Reviewed back-ports, private-only research, and marketplace branding

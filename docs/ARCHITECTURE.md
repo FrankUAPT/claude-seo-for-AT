@@ -6,7 +6,7 @@ Claude SEO follows Anthropic's official Claude Code skill specification with a m
 
 ## Directory Structure
 
-The plugin ships 29 sub-skills (22 core + 1 orchestrator + 1 framework integration + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
+The plugin ships 30 sub-skills (22 core + 1 orchestrator + 1 framework integration + 1 site profile + 5 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
 
 ```
 ~/.claude/plugins/.../claude-seo/
@@ -42,7 +42,8 @@ The plugin ships 29 sub-skills (22 core + 1 orchestrator + 1 framework integrati
 │   ├── seo-image-gen/          # Banana MCP mirror (extension surface)
 │   ├── seo-bing/               # Bing Webmaster + IndexNow mirror (extension surface)
 │   ├── seo-shopify/            # Shopify Crawler Access mirror (extension surface)
-│   └── seo-posthog/            # PostHog MCP mirror (extension surface)
+│   ├── seo-posthog/            # PostHog MCP mirror (extension surface)
+│   └── seo-activitytimeline/   # ActivityTimeline site profile (SEO Lab memory, gates, fact lint)
 │
 └── agents/
     ├── seo-technical.md        # Crawlability, indexability, security

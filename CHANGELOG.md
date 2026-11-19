@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (ActivityTimeline fork)
+
+- `seo-activitytimeline` skill (`/seo activitytimeline status|gate|facts|recheck|weekly|route`):
+  the site profile for activitytimeline.com. It loads the SEO Lab memory repository
+  (FrankUAPT/seo-lab-memory), applies the Lab charter (KPIs, permission tiers,
+  off-limits) and routes each job to the plugin or account skill that owns it, with
+  per-skill overrides (`references/skill-overrides.md`) and KPI measurement recipes
+  (`references/kpi-measurement.md`).
+- `scripts/activitytimeline_gate.py`: Visibility Scale gates G1 (200, no noindex,
+  exactly one self canonical, every canonical tag counted), G3 (22 fact rules tied to
+  the memory's fact register, in `data/activitytimeline/profile.json`) and G5 (AI
+  crawler access), plus title field limit, title year, lang, hreflang, sitemap and
+  llms.txt checks, on one page, the 12 commercial pages or a draft file.
+- `scripts/lab_memory_status.py`: memory briefing with overdue and due-soon
+  re-checks, unpublished drafts, open decisions by age, memory freshness and the
+  charter KPIs against the latest scorecard row.
+- The orchestrator loads the profile first for ActivityTimeline work, skips the local,
+  maps, e-commerce and Shopify paths there, and drops the community footer.
+
 ## [2.6.2] - 2026-11-15
 
 ### Security

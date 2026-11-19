@@ -1,0 +1,283 @@
+{
+  "about": "ActivityTimeline site profile for scripts/activitytimeline_gate.py. The source of truth is the SEO Lab memory repository (FrankUAPT/seo-lab-memory): facts.md for every rule below, ids-and-references.md for the commercial URLs, visibility-scale.md for the G5 crawler list. When facts.md gains a newer row than facts_as_of, update the affected rule and facts_as_of in the same run.",
+  "facts_as_of": "2026-11-09",
+  "site": {
+    "origin": "https://activitytimeline.com",
+    "locales": {"en": "", "es": "/es", "fr": "/fr", "pt": "/pt"},
+    "commercial_paths": [
+      "/",
+      "/capacity-planning",
+      "/tempo-alternative",
+      "/cost-tracking",
+      "/resource-management",
+      "/features",
+      "/time-tracking",
+      "/timeline-for-jira",
+      "/advanced-jira-reports",
+      "/pricing",
+      "/schedule-demo",
+      "/how-it-works"
+    ],
+    "ai_crawlers": ["Googlebot", "Bingbot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Claude-SearchBot", "Applebot"],
+    "title_field_max_chars": 80
+  },
+  "current": {
+    "marketplace_reviews": 125,
+    "marketplace_rating": 4.7,
+    "demo_minutes": 25
+  },
+  "fact_rules": [
+    {
+      "id": "f15-old-team-count",
+      "fact": "f15",
+      "kind": "forbid",
+      "pattern": "\\b5[,.\\u00a0 ]?000\\s*\\+?\\s*(?:teams|equipos|équipes|equipes|times)\\b",
+      "ignore_case": true,
+      "severity": "High",
+      "gate": "G3",
+      "message": "'5,000 teams' was removed from every page on 6 Nov 2026. The confirmed figure is '10,000+ teams', used plainly.",
+      "source": "facts.md f15, Ostap 5 Nov 2026 (STB-3, STB-11)"
+    },
+    {
+      "id": "f15-teams-not-customers",
+      "fact": "f15",
+      "kind": "forbid",
+      "pattern": "\\b10[,.\\u00a0 ]?000\\s*\\+?\\s*(?:customers|companies|clients|organi[sz]ations|businesses|clientes|empresas|entreprises|sociétés)\\b",
+      "ignore_case": true,
+      "severity": "High",
+      "gate": "G3",
+      "message": "'10,000+' counts team entities in the product database. Never write it as customers or companies.",
+      "source": "facts.md f15, Ostap 5 Nov 2026"
+    },
+    {
+      "id": "f10-server",
+      "fact": "f10",
+      "kind": "forbid",
+      "pattern": "\\bJira Server\\b|\\bServer (?:edition|version|licen[cs]e|hosting)s?\\b",
+      "ignore_case": false,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Server is not offered and Atlassian Server ended in February 2024. Do not mention Server; the editions are Cloud and Data Center.",
+      "source": "facts.md f10"
+    },
+    {
+      "id": "f06-free-small-teams",
+      "fact": "f06",
+      "kind": "forbid",
+      "pattern": "\\bfree\\s+(?:for\\s+)?(?:up\\s+to\\s+)?10\\s+users\\b|\\bfree\\s+for\\s+(?:small\\s+)?teams\\s+(?:of\\s+)?(?:up\\s+to\\s+)?10\\b",
+      "ignore_case": true,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Open fact f06. /pricing says $10 a month for up to 10 users; do not state that it is free for up to 10 users.",
+      "source": "facts.md f06 (open)"
+    },
+    {
+      "id": "f05-per-user-misquote",
+      "fact": "f05",
+      "kind": "forbid",
+      "pattern": "\\$\\s?1[05](?:\\.00)?\\s*(?:/|per|a)\\s*user",
+      "ignore_case": true,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Cloud is $10 a month flat up to 10 users, then graduated per-user rates. '$10 or $15 per user' is the wrong price Google's brand AI Overview repeats.",
+      "source": "facts.md f05; strategy 5 Nov 2026 M6"
+    },
+    {
+      "id": "f05-old-500-user-value",
+      "fact": "f05",
+      "kind": "forbid",
+      "pattern": "\\$\\s?8,?250\\b",
+      "ignore_case": false,
+      "severity": "High",
+      "gate": "G3",
+      "message": "$8,250 is the old /pricing pop-up value for 500 users. Standard Edition at 500 users is $8,450 a year.",
+      "source": "facts.md f05, Ostap 5 Nov 2026; Sitechecker crawl 8 Nov 2026"
+    },
+    {
+      "id": "f07-old-advanced-quote",
+      "fact": "f07",
+      "kind": "forbid",
+      "pattern": "\\$\\s?1,?245\\b",
+      "ignore_case": false,
+      "severity": "High",
+      "gate": "G3",
+      "message": "The older $1,245 a month at 500 users Advanced quote is not covered. The confirmed figure is $21,950 a year for 1,000 users (Cloud, annual), dated, pointing to /pricing or the Marketplace.",
+      "source": "facts.md f07, Ostap 9 Nov 2026"
+    },
+    {
+      "id": "f14-install-count",
+      "fact": "f14",
+      "kind": "forbid",
+      "pattern": "\\b\\d{1,2}[,.\\u00a0 ]?\\d{3}\\s*\\+?\\s*(?:installs|installations|instalaciones|instalações)\\b",
+      "ignore_case": true,
+      "severity": "Low",
+      "gate": null,
+      "message": "Policy of 5 Nov 2026: no install count in new copy ('it changes every week'). Counts already live stay as they are.",
+      "source": "facts.md f14, Ostap 5 Nov 2026"
+    },
+    {
+      "id": "f13-review-count",
+      "fact": "f13",
+      "kind": "number",
+      "pattern": "\\b(\\d{2,4})\\s+(?:reviews|reseñas|avis|avaliações)\\b",
+      "ignore_case": true,
+      "expected_key": "marketplace_reviews",
+      "severity": "Medium",
+      "gate": "G3",
+      "message": "Marketplace review count differs from the current figure. Use one dated figure everywhere, structured data included. Ignore if the count belongs to a competitor.",
+      "source": "facts.md f13 (re-check monthly)"
+    },
+    {
+      "id": "f13-rating",
+      "fact": "f13",
+      "kind": "number",
+      "pattern": "\\b(\\d\\.\\d)\\s*(?:/\\s*5\\b|out of 5\\b|stars?\\b)",
+      "ignore_case": true,
+      "expected_key": "marketplace_rating",
+      "severity": "Medium",
+      "gate": "G3",
+      "message": "Marketplace rating differs from the current figure. Ignore if the rating belongs to a competitor.",
+      "source": "facts.md f13"
+    },
+    {
+      "id": "f12-demo-length",
+      "fact": "f12",
+      "kind": "number",
+      "pattern": "\\b(\\d{2})[- ]minutes?\\s+(?:product\\s+)?(?:demo|call|session)\\b",
+      "ignore_case": true,
+      "expected_key": "demo_minutes",
+      "severity": "Medium",
+      "gate": "G3",
+      "message": "The demo is 25 minutes, up to 10 attendees, in English, Spanish, French or Portuguese.",
+      "source": "facts.md f12"
+    },
+    {
+      "id": "f19-hosting",
+      "fact": "f19",
+      "kind": "forbid",
+      "pattern": "\\b(?:Frankfurt|Ohio)\\b",
+      "ignore_case": false,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Open fact f19: hosting regions (the site says EU, Germany by default, US or AU; the docs say Frankfurt or Ohio).",
+      "source": "facts.md f19 (open)"
+    },
+    {
+      "id": "f20-outlook-two-way",
+      "fact": "f20",
+      "kind": "sentence",
+      "pattern": "\\bOutlook\\b",
+      "with": "\\btwo[- ]way\\b|\\b2[- ]way\\b|\\bbi-?directional\\b",
+      "ignore_case": true,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Open fact f20: Outlook two-way sync or export only is not settled.",
+      "source": "facts.md f20 (open)"
+    },
+    {
+      "id": "f22-unconfirmed-integrations",
+      "fact": "f22",
+      "kind": "forbid",
+      "pattern": "\\bScriptRunner\\b|\\bWBS[- ]Gantt\\b",
+      "ignore_case": true,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Open fact f22: Structure, WBS-Gantt and ScriptRunner appear on the home page but not in the docs.",
+      "source": "facts.md f22 (open)"
+    },
+    {
+      "id": "f24-mcp",
+      "fact": "f24",
+      "kind": "forbid",
+      "pattern": "\\bMCP\\b",
+      "ignore_case": false,
+      "severity": "High",
+      "gate": "G3",
+      "message": "Open fact f24: whether the ActivityTimeline MCP server is available to customers and can be described publicly.",
+      "source": "facts.md f24 (open)"
+    },
+    {
+      "id": "f02-brand-spelling",
+      "fact": "f02",
+      "kind": "forbid",
+      "pattern": "\\bActivity[ \\u00a0-]Timeline\\b|\\bActivitytimeline\\b|\\bActivityTimeLine\\b|\\bACTIVITYTIMELINE\\b",
+      "ignore_case": false,
+      "severity": "Medium",
+      "gate": "G3",
+      "message": "The product is 'ActivityTimeline', one word, capital A and T.",
+      "source": "facts.md f02"
+    },
+    {
+      "id": "f02-jira-caps",
+      "fact": "f02",
+      "kind": "forbid",
+      "pattern": "\\bJIRA\\b",
+      "ignore_case": false,
+      "severity": "Low",
+      "gate": null,
+      "message": "Jira is always written 'Jira'.",
+      "source": "facts.md f02"
+    },
+    {
+      "id": "f03-finances-data-center",
+      "fact": "f03",
+      "kind": "sentence",
+      "pattern": "\\bFinances?\\b",
+      "with": "\\bData Center\\b",
+      "ignore_case": false,
+      "severity": "Medium",
+      "gate": "G3",
+      "message": "Finances is part of the Advanced Edition on Cloud. Check that this sentence does not offer it on Data Center (the 6 Nov P0 review found that error on /cost-tracking).",
+      "source": "facts.md f03, f04; strategy/p0-package-review-2026-11-06.md"
+    },
+    {
+      "id": "f09-data-center-new-customers",
+      "fact": "f09",
+      "kind": "sentence",
+      "pattern": "\\bData Center\\b",
+      "with": "\\b(?:buy|purchase|new customers?|sign up)\\b",
+      "ignore_case": true,
+      "severity": "Low",
+      "gate": null,
+      "message": "Atlassian ended Data Center sales to new customers on 30 Mar 2026. Present Data Center pricing as for existing Data Center customers.",
+      "source": "facts.md f09"
+    },
+    {
+      "id": "f17-cloud-fortified",
+      "fact": "f17",
+      "kind": "forbid",
+      "pattern": "\\bCloud Fortified\\b",
+      "ignore_case": true,
+      "severity": "Low",
+      "gate": null,
+      "message": "Cloud Fortified is phased out at the end of 2026. ActivityTimeline for Jira Cloud is Atlassian Enterprise Certified since 27 Oct 2026 (f18).",
+      "source": "facts.md f17, f18"
+    },
+    {
+      "id": "f25-tempo-like-for-like",
+      "fact": "f25",
+      "kind": "requires",
+      "pattern": "\\bTempo\\b[^.]{0,240}?\\d{1,3}\\s?%|\\d{1,3}\\s?%[^.]{0,240}?\\bTempo\\b",
+      "require": "\\blike[- ]for[- ]like\\b",
+      "ignore_case": true,
+      "locales": ["en"],
+      "severity": "High",
+      "gate": "G3",
+      "message": "A Tempo saving is stated but the page never says the comparison is like for like (Standard vs Timesheets + Capacity Planner; Advanced vs Timesheets + Financial Manager; the full suite).",
+      "source": "facts.md f25; Tempo price brief Oct 2026"
+    },
+    {
+      "id": "f25-tempo-price-dated",
+      "fact": "f25",
+      "kind": "requires",
+      "pattern": "\\bTempo\\b[^.]{0,160}?\\$\\s?\\d",
+      "require": "\\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\.?\\s+20\\d\\d\\b|\\b\\d{1,2}\\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\s+20\\d\\d\\b|\\b20\\d\\d-\\d\\d-\\d\\d\\b",
+      "ignore_case": true,
+      "locales": ["en"],
+      "severity": "Medium",
+      "gate": "G3",
+      "message": "A Tempo price is quoted but the page carries no date for it. Date and source every Tempo price.",
+      "source": "facts.md f25"
+    }
+  ]
+}
