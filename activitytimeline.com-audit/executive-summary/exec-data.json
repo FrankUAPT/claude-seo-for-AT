@@ -1,0 +1,207 @@
+{
+ "summary": {
+  "health_score": 69,
+  "business_type": "SaaS (Jira Marketplace app)",
+  "top_findings": [
+   "The pricing page shows a wrong price ($1,000 a month) to search and AI crawlers that do not run scripts.",
+   "Six product pages tell search engines their address is a page that does not exist.",
+   "The cost pages never say what Jira lacks, which edition includes Finances, or what it costs. AI assistants have nothing to quote.",
+   "21 new pages went live without a record, so several pages now compete for the same searches.",
+   "Changes approved on 9 and 10 November are still waiting to be published."
+  ],
+  "quick_wins": [
+   "Correct the fixed price text on the pricing page.",
+   "Correct the page addresses in the product page markup (drafts are ready).",
+   "Update llms.txt: two dead links out, nine live pages in.",
+   "One facts pass: 125 reviews, 'ActivityTimeline' as one word in the header, no 'Server' in the footer.",
+   "Publish the approved titles and descriptions."
+  ],
+  "top_findings_title": "Main problems"
+ },
+ "categories": [
+  {
+   "name": "Technical SEO",
+   "score": 82,
+   "what_works": [
+    "Pages load securely, with one clear address each"
+   ],
+   "findings": [
+    {
+     "title": "Wrong price in the pricing page code",
+     "severity": "High",
+     "description": "Both plan cards read $1,000 a month until a script replaces it with $10 and $15.",
+     "recommendation": "Make the fixed text match the real starting price."
+    }
+   ]
+  },
+  {
+   "name": "Content Quality",
+   "score": 66,
+   "what_works": [
+    "Product pages are specific and consistent"
+   ],
+   "findings": [
+    {
+     "title": "Facts differ between pages",
+     "severity": "High",
+     "description": "122 and 125 reviews, two spellings of the product name, 'Server' still mentioned, free versus $10 for small teams.",
+     "recommendation": "One facts pass; two items need a decision."
+    }
+   ]
+  },
+  {
+   "name": "On-Page SEO",
+   "score": 79,
+   "what_works": [
+    "One main heading per page"
+   ],
+   "findings": [
+    {
+     "title": "Approved titles and descriptions are not live",
+     "severity": "High",
+     "description": "Most sampled blog posts still do not name ActivityTimeline in their description; one title is cut off mid-word.",
+     "recommendation": "Publish the approved list, buyer posts and guides first."
+    }
+   ]
+  },
+  {
+   "name": "Schema / Structured Data",
+   "score": 38,
+   "what_works": [
+    "All markup is valid code"
+   ],
+   "findings": [
+    {
+     "title": "Product page markup points to missing pages",
+     "severity": "High",
+     "description": "Six pages declare addresses that return 'not found'.",
+     "recommendation": "Replace with the real addresses."
+    }
+   ]
+  },
+  {
+   "name": "Performance (CWV)",
+   "score": 66,
+   "what_works": [
+    "Fast server response"
+   ],
+   "findings": [
+    {
+     "title": "Scripts load where they are not needed",
+     "severity": "Medium",
+     "description": "A form-protection script runs on every page, and a hidden booking widget loads on every pricing visit. Measured in a test environment only; real-visitor data was not available.",
+     "recommendation": "Load them only where they are used."
+    }
+   ]
+  },
+  {
+   "name": "AI Search Readiness",
+   "score": 63,
+   "what_works": [
+    "AI crawlers are allowed in"
+   ],
+   "findings": [
+    {
+     "title": "Cost pages give AI assistants nothing to quote",
+     "severity": "High",
+     "description": "No statement of what Jira lacks, no edition, no price. ActivityTimeline is mentioned in under 8% of cost and budget questions.",
+     "recommendation": "Add a short 'Jira alone versus with ActivityTimeline' block, the edition and a price pointer."
+    }
+   ]
+  },
+  {
+   "name": "Images",
+   "score": 68,
+   "what_works": [
+    "Mostly lightweight vector images"
+   ],
+   "findings": [
+    {
+     "title": "Older image formats on the blog",
+     "severity": "Low",
+     "description": "Many blog images are still PNG or JPG.",
+     "recommendation": "Convert when posts are next edited."
+    }
+   ]
+  }
+ ],
+ "action_plan": {
+  "phases": [
+   {
+    "name": "Decide first (Ostap)",
+    "timeframe": "This week",
+    "items": [
+     "Is the new site structure a go, and when did the 21 pages launch?",
+     "Are the Advanced prices and features on the pricing page correct?",
+     "Did anyone order link building between April and September 2026?",
+     "Small teams: $10 a month, or free for up to 10 users?",
+     "Should the markup name Reliex as the company and ActivityTimeline as the product?"
+    ]
+   },
+   {
+    "name": "Fix first",
+    "timeframe": "Week 1",
+    "items": [
+     "Pricing page: correct the fixed price text.",
+     "Product pages: correct the addresses in the markup.",
+     "llms.txt: remove dead links, add the nine missing pages.",
+     "Facts pass: reviews, product name spelling, 'Server' mentions.",
+     "Publish the approved titles, descriptions and pricing lines."
+    ]
+   },
+   {
+    "name": "Fix next",
+    "timeframe": "Weeks 2 to 4",
+    "items": [
+     "Cost tracking page: say where Jira stops, name the edition, point to the price.",
+     "Add the software description to home, pricing and product pages.",
+     "Clean up the three main guides.",
+     "Demo page: add a plain booking link and put the headline first on mobile.",
+     "Stop author and category pages from pointing search engines to the blog home."
+    ]
+   },
+   {
+    "name": "Measure",
+    "timeframe": "4 December and 1 January",
+    "items": [
+     "AI citations on product and pricing pages (0 today).",
+     "Mention rate on cost and budget questions (7.9% baseline).",
+     "Brand clicks and buyer clicks (84 and 21 per 28 days at the last reading).",
+     "Reconnect Sitechecker so Search Console data can be read again."
+    ]
+   }
+  ]
+ },
+ "artifacts": {
+  "findings_dir": "../findings/",
+  "screenshots_dir": "../screenshots/"
+ },
+ "data_sources": [
+  {
+   "source": "Live website",
+   "description": "Home, product, pricing, guide and language pages, robots.txt, sitemap and llms.txt, read directly",
+   "as_of": "19 Nov 2026"
+  },
+  {
+   "source": "Ahrefs",
+   "description": "Backlinks, referring domains and AI citations",
+   "as_of": "18 to 19 Nov 2026"
+  },
+  {
+   "source": "SEO Lab memory",
+   "description": "Charter KPIs, fact register, decisions and the last weekly scorecard",
+   "as_of": "9 Nov 2026 scorecard"
+  },
+  {
+   "source": "Lab test in a cloud browser",
+   "description": "Page speed and mobile screenshots, without third-party scripts",
+   "as_of": "19 Nov 2026"
+  },
+  {
+   "source": "Not available",
+   "description": "Search Console, GA4, real-visitor speed data, help centre and Marketplace listing",
+   "as_of": "not read"
+  }
+ ],
+ "methodology_note": "Scores rank the work to do; they are not a measurement. Clicks and AI mention rates are the 9 November readings."
+}
