@@ -78,11 +78,15 @@ and for commercial pages presence in sitemap.xml and llms.txt. G2 and G4 come
 back under `not_checked` with the tool to use. If `facts_drift.stale` is true,
 update `${CLAUDE_PLUGIN_ROOT}/data/activitytimeline/profile.json` from the newer facts.md rows first.
 
-The cloud proxy may refuse activitytimeline.com (it did on 19 Nov 2026). Then
-read the page through Sitechecker `audit_page_details` (status, canonical,
-robots, found_at) and Ahrefs `site-audit-page-content` (raw HTML, save it to
-a file and run `--file <saved.html> --base-url <url>`), and say which source
-each finding came from.
+In Claude Code cloud sessions `--url` and `--commercial` fail with "DNS
+resolution failed": the network is proxy-only and the plugin's SSRF guard
+resolves the host itself. There, save each page with
+`curl -sS -L -o <scratch>/<name>.html <url>` into an empty scratch folder
+(the session's environment must allow activitytimeline.com) and run
+`--file <saved.html> --base-url <final url>`; curl's redirect count tells you
+which URLs moved. Other fallbacks: Sitechecker `audit_page_details` (status,
+canonical, robots, found_at) and Ahrefs `site-audit-page-content` (raw HTML
+of the last crawl). Say which source each finding came from.
 
 ### facts
 
