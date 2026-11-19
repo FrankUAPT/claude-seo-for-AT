@@ -30,9 +30,10 @@ End of every run that learned, decided or changed something:
    changelog entry with its baseline for a shipped change, a decision file for
    a decision of Ostap's, a scorecard row for a weekly run, a `lessons.md` line
    for a tool quirk. No raw data, no secrets, no customer names.
-2. Commit once with `[Role] what changed` (`[PM] ...`, `[Analyst] ...`). Push to
-   `main` when this session may push there; otherwise push a branch and say it
-   needs merging. Never force-push or rewrite history.
+2. Commit once with `[Role] what changed` (`[PM] ...`, `[Analyst] ...`) and push
+   straight to the memory's `main` (Ostap's decision of 19 Nov 2026). If the push
+   is rejected because `main` moved, pull with `--ff-only` or merge, then push
+   again. Never force-push or rewrite history.
 
 ### Standing rules for ActivityTimeline work (from the charter)
 

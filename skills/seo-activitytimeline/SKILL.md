@@ -169,9 +169,10 @@ prompt. Recipes per KPI: `references/kpi-measurement.md`. IDs:
   their initiative file; scoring `facts.md`; anyone `lessons.md`. Nobody edits
   `charter.md` without a decision from Ostap.
 - **Working files** go to `initiatives/<initiative>/<ticket>-<what>-YYYY-MM-DD.md`.
-- **Commit once at the end:** `[Role] what changed`, after the Jira comment.
-  Push to `main` when this session may push there; otherwise push a branch
-  and tell Ostap it needs merging. Never force-push or rewrite history.
+- **Commit once at the end:** `[Role] what changed`, after the Jira comment,
+  and push straight to the memory's `main` (decided 19 Nov 2026). If `main`
+  moved, pull with `--ff-only` or merge, then push. Never force-push or
+  rewrite history.
 - A new tool quirk goes to `lessons.md` with the date and where it came from.
 
 ## Reference files
