@@ -505,6 +505,41 @@ FLOW framework integration: evidence-led prompts for the Find, Leverage, Optimiz
 
 ---
 
+### `/seo activitytimeline [status|gate|facts|recheck|weekly|route] [url|file]`
+
+ActivityTimeline site profile. Loads the SEO Lab memory repository
+(FrankUAPT/seo-lab-memory) and applies its charter, fact register, KPIs and
+permission tiers to every other command for activitytimeline.com.
+
+**Examples:**
+```
+/seo activitytimeline status
+/seo activitytimeline gate commercial
+/seo activitytimeline gate https://activitytimeline.com/pricing
+/seo activitytimeline facts draft.md
+/seo activitytimeline recheck
+```
+
+**What it does:**
+1. `status`: `lab_memory_status.py` lists overdue and due-soon re-checks,
+   unpublished drafts, open decisions with their age, memory freshness and the
+   charter KPIs against the latest scorecard row
+2. `gate`: `activitytimeline_gate.py` runs the Visibility Scale gates G1 (200,
+   no noindex, exactly one self canonical), G3 (fact rules) and G5 (AI crawler
+   access) plus title, lang, hreflang, sitemap and llms.txt checks, on one page
+   or the 12 commercial pages (`--locales` adds es, fr and pt)
+3. `facts`: the same fact lint on a draft file before it goes into Webflow
+4. `recheck`: measures shipped changes whose re-check date has come against
+   their changelog baseline
+5. `weekly`: the weekly visibility run, following the spec in the memory
+6. `route`: which plugin or account skill owns a job, and the overrides that
+   apply to this site
+
+**Output:** JSON from the scripts; findings and results go to the memory per
+its write rules.
+
+---
+
 ### `/seo google [command] [url]`
 
 Google SEO APIs. 4-tier credential system covering PageSpeed Insights, CrUX, CrUX History, Search Console, URL Inspection, Indexing API, GA4, and Keyword Planner.
@@ -813,6 +848,7 @@ Uncapped, sitemap-complete crawl of a Shopify store you administer, signed with 
 | `/seo programmatic [url\|plan]` | Programmatic SEO analysis |
 | `/seo competitor-pages [url\|generate]` | Competitor comparison pages |
 | `/seo flow [stage] [url\|topic]` | FLOW framework prompts |
+| `/seo activitytimeline [status\|gate\|facts\|recheck\|weekly\|route]` | ActivityTimeline profile: SEO Lab memory, gates, fact lint, KPI re-checks |
 | `/seo google [command] [url]` | Google SEO APIs (GSC, PSI, CrUX, GA4) |
 | `/seo dataforseo [command]` | Live SEO data (extension) |
 | `/seo image-gen [use-case] <desc>` | AI image generation (extension) |

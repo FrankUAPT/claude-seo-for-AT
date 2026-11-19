@@ -375,7 +375,7 @@ def test_canonical_math_adds_up():
     )
     headline = int(headline_match.group(1))
     breakdown = headline_match.group(2)
-    parts = [int(n) for n in re.findall(r"(\d+)\s+(?:core|orchestrator|framework|extension)", breakdown)]
+    parts = [int(n) for n in re.findall(r"(\d+)\s+(?:core|orchestrator|framework|site profile|extension)", breakdown)]
     assert sum(parts) == headline, (
         f"plugin.json canonical phrasing breakdown {breakdown!r} sums to "
         f"{sum(parts)} but headline claims {headline}. Math must add up."
